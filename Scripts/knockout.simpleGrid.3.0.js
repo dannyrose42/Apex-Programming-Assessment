@@ -40,15 +40,15 @@
     };
 
     templateEngine.addTemplate("ko_simpleGrid_grid", "\
-                    <table class=\"ko-grid\" cellspacing=\"0\">\
+                    <table class=\"ko-grid table\" cellspacing=\"0\">\
                         <thead>\
                             <tr data-bind=\"foreach: columns\">\
-                               <th data-bind=\"text: headerText\"></th>\
+                               <th scope=\"col\" data-bind=\"text: headerText\"></th>\
                             </tr>\
                         </thead>\
                         <tbody data-bind=\"foreach: itemsOnCurrentPage\">\
                            <tr data-bind=\"foreach: $parent.columns\">\
-                               <td data-bind=\"text: typeof rowText == 'function' ? rowText($parent) : $parent[rowText] \"></td>\
+                               <td scope=\"row\" data-bind=\"text: typeof rowText == 'function' ? rowText($parent) : $parent[rowText] \"></td>\
                             </tr>\
                         </tbody>\
                     </table>");

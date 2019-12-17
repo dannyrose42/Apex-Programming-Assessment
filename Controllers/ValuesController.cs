@@ -16,9 +16,14 @@ namespace Apex_Programming_Assessment.Controllers
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            return "value";
+            List<DAL.vCustomerInvoices> invoices = new List<DAL.vCustomerInvoices>();
+            using (var db = new DAL.DataAccess())
+            {
+                invoices = db.vCustomerInvoices.Where(i => i.SalesOrderID == id).ToList();
+            }
+            return Ok(invoices);
         }
 
         // POST api/values

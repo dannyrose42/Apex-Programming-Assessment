@@ -9,6 +9,7 @@ namespace Apex_Programming_Assessment
 {
 	public static class SpreadsheetBuilder
 	{
+		//private class Column : SpreadsheetBuilder.ColumnTemplate<CustomerInvoice> { }
 		public const string ACCOUNTING_FORMAT = @"_($* #,##0.00_);_($* (#,##0.00);_($* "" - ""??_);_(@_)";
 		public const string PERCENT_FORMAT = @"0.00%";
 		public const string DECIMAL_FORMAT = @"_(* #,##0.00_);_(* (#,##0.00);_(* "" - ""??_);_(@_)";
