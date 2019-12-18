@@ -1,18 +1,49 @@
 ﻿<div class='liveExample'>
     <p>Start Date: <input type="text" id="startDate"></p>
     <p>End Date: <input type="text" id="endDate"></p>
-    <div data-bind='simpleGrid: gridViewModel'> </div>
 
-    <button data-bind='click: addItem'>
-        Add item
-    </button>
+    <button id="submitBtn">Submit</button>
 
-    <button data-bind='click: sortByName'>
-        Sort by name
-    </button>
 
-    <button data-bind='click: jumpToFirstPage, enable: gridViewModel.currentPageIndex'>
-        Jump to first pagess
-    </button>
+    @*<div id="koGrid" data-bind='simpleGrid: gridViewModel'> </div>*@
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sold At</th>                
+                <th>Sold To         </th>
+                <th>Account Number  </th>
+                <th>Invoice #       </th>
+                <th>Customer PO #   </th>
+                <th>Order Date      </th>
+                <th>Due Date        </th>
+                <th>Invoice Total   </th>
+                <th>Product Number  </th>
+                <th>Order Qty       </th>
+                <th>Unit Net        </th>
+                <th>Line Total      </th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: data">
+            <tr>
+                <td data-bind="text: SoldAt"></td>
+                <td data-bind="text: FirstName + ' ' + LastName"></td>
+                <td data-bind="text: AccountNumber"></td>
+                <td data-bind="text: SalesOrderID"></td>
+                <td data-bind="text: PurchaseOrderNumber"></td>
+                <td data-bind="text: new Date(OrderDate).toISOString().split('T')[0]"></td>
+                <td data-bind="text: new Date(DueDate).toISOString().split('T')[0]"></td>
+                <td data-bind="text: '$' + TotalDue.toFixed(2)"></td>
+                <td data-bind="text: ProductNumber"></td>
+                <td data-bind="text: OrderQty"></td>
+                <td data-bind="text: '$' + (LineTotal / OrderQty).toFixed(2)"></td>
+                <td data-bind="text: '$' + LineTotal.toFixed(2)"></td>
+            </tr>
+        </tbody>
+    </table>
+
+
 
 </div>
+
+

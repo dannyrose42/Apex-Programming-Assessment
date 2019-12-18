@@ -77,7 +77,7 @@ namespace Apex_Programming_Assessment.Controllers
             result.Content.Headers.ContentType =
                 new MediaTypeHeaderValue("application/octet-stream");
 
-            return result;
+             return result;
         }
 
         // GET api/values/5

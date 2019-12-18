@@ -27,7 +27,6 @@ namespace Apex_Programming_Assessment
 
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                         "~/Scripts/knockout-3.5.1.js",
-                        "~/Scripts/knockout.simpleGrid.3.0.js",
                         "~/Scripts/KOTest.js"
                         ));
 

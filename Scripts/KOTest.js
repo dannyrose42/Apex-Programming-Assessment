@@ -1,56 +1,48 @@
-﻿
+﻿//Set Knockout View Mode
+function ViewModel() {
+    var self = this;
 
+    self.data = ko.observableArray();
+};
+var viewModel = new ViewModel();
+ko.applyBindings(viewModel);
 
+function UpdateGrid() {
+    var sDate = $("#startDate").datepicker("getDate").toLocaleDateString();
+    var eDate = $("#endDate").datepicker("getDate").toLocaleDateString();
+    $.ajax({
+        type: "GET",
+        url: "api/values",
+        data: {
+            startDate: sDate,
+            endDate: eDate
+        },
+        success: function (data) {
+            viewModel.data(data);
+        },
+        error: function (data) {
+            alert('error');
+            console.log(data);
+        }
+    });
+}
+//Initialize  Datepickers
 
-$(function () {
-    $("#startDate").datepicker();
-    $("#startDate").datepicker("setDate", "07/01/2011");
+$("#startDate").datepicker();
+$("#startDate").datepicker("setDate", "03/30/2014");
+$("#endDate").datepicker();
+$("#endDate").datepicker("setDate", "04/01/2014");
 
-    $("#endDate").datepicker();
-    $("#endDate").datepicker("setDate", "07/02/2011");
+//Wire up submit button
+$("#submitBtn").click(function (e) {
+    e.preventDefault();
+    UpdateGrid();
 });
 
-$.get("api/values", {
-    startDate: "01/12/2012",
-    endDate: "02/12/2012",
-})
-    .done(function (data) {
-        initialData = data;
-        ko.applyBindings(new PagedGridModel(initialData))
-    });
 
-var PagedGridModel = function (items) {
-    this.items = ko.observableArray(items);
+$("#startDate").datepicker();
+$("#startDate").datepicker("setDate", "03/30/2014");
+$("#endDate").datepicker();
+$("#endDate").datepicker("setDate", "04/01/2014");
 
-    this.addItem = function () {
-        $.get("api/values", {
-            startDate: "01/12/2012",
-            endDate: "02/12/2012",
-            getSpreadSheet: true
-        })
-            .done(function (data) {
-                
-            });
-    };
-
-    this.gridViewModel = new ko.simpleGrid.viewModel({
-        data: this.items,
-        columns: [
-            { headerText: "Sold At", rowText: "SoldAt" },
-            { headerText: "Sold To", rowText: function (item) { return item.FirstName + " " + item.LastName } },                        
-            { headerText: "Account Number", rowText: "AccountNumber" },
-            { headerText: "Invoice #", rowText: "SalesOrderID" },
-            { headerText: "Customer PO #", rowText: "PurchaseOrderNumber" },
-            { headerText: "Order Date", rowText: "OrderDate" },
-            { headerText: "Due Date", rowText: "DueDate" },
-            { headerText: "Invoice Total", rowText: function (item) { return "$" + item.TotalDue.toFixed(2) } },
-            { headerText: "Product Number", rowText: "ProductNumber" },
-            { headerText: "Order Qty", rowText: "OrderQty" },
-            { headerText: "Unit Net", rowText: function (item) { return "$" + item.UnitPrice.toFixed(2) } },
-            { headerText: "Line Total", rowText: function (item) { return "$" + item.LineTotal.toFixed(2) } }
-        ],
-        pageSize: 15
-    });
-};
-
-//ko.applyBindings(new PagedGridModel(initialData))
+UpdateGrid();
