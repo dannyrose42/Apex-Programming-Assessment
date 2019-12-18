@@ -26,19 +26,15 @@ function UpdateGrid() {
         }
     });
 }
-//Initialize  Datepickers
-
-$("#startDate").datepicker();
-$("#startDate").datepicker("setDate", "03/30/2014");
-$("#endDate").datepicker();
-$("#endDate").datepicker("setDate", "04/01/2014");
 
 //Wire up submit button
 $("#submitBtn").click(function (e) {
     e.preventDefault();
     UpdateGrid();
 });
-
+//Since we can't return the excel file via ajax, we'll make just use ajax to tell
+//the server to make the file and hold on it. Then on success we'll ask the server to 
+//give it to us.
 $("#exportBtn").click(function (e) {
     e.preventDefault();
     var sDate = $("#startDate").datepicker("getDate").toLocaleDateString();
@@ -50,8 +46,7 @@ $("#exportBtn").click(function (e) {
             startDate: sDate,
             endDate: eDate
         },
-        success: function (data) {
-            //var response = JSON.parse(data);
+        success: function (data) {            
             window.location = 'Export/Download?fileGuid=' + data.FileGuid
                 + '&filename=' + data.FileName;
         },
@@ -60,28 +55,19 @@ $("#exportBtn").click(function (e) {
             console.log(data);
         }
     });
-    
-    //fetch('api/values', { startDate: sDate, endDate: eDate, getSpreadSheet:true})
-    //    .then(resp => resp.blob())
-    //    .then(blob => {
-    //        const url = window.URL.createObjectURL(blob);
-    //        const a = document.createElement('a');
-    //        a.style.display = 'none';
-    //        a.href = url;
-    //        // the filename you want
-    //        a.download = 'todo-1.xls';
-    //        document.body.appendChild(a);
-    //        a.click();
-    //        window.URL.revokeObjectURL(url);
-    //        alert('your file has downloaded!'); // or you know, something with better UX...
-    //    })
-    //    .catch(() => alert('oh no!'));
+
 });
 
 
-$("#startDate").datepicker();
-$("#startDate").datepicker("setDate", "03/30/2014");
-$("#endDate").datepicker();
-$("#endDate").datepicker("setDate", "04/01/2014");
 
+var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+//Default start to beginning of previous month, and default end to the ending of the previous month
+var startDate = new Date(y, m - 1, 1);
+var endDate = new Date(y, m, 0);
+$("#startDate").datepicker();
+$("#startDate").datepicker("setDate", startDate);
+
+$("#endDate").datepicker();
+$("#endDate").datepicker("setDate", endDate);
+//Inital Grid Load
 UpdateGrid();

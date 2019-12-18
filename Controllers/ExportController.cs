@@ -27,12 +27,9 @@ namespace Apex_Programming_Assessment.Controllers
             var pkg = new ExcelPackage();
             var wbk = pkg.Workbook;
             var sheet = wbk.Worksheets.Add("Invoice Data");
-
             var normalStyle = "Normal";
             var acctStyle = wbk.CreateAccountingFormat();
-
             var data = invoices;
-
             var columns = new[]
             {
 
@@ -45,9 +42,8 @@ namespace Apex_Programming_Assessment.Controllers
                 new Column { Title = "Invoice Total", Style = acctStyle, Action = i => i.TotalDue, },
                 new Column { Title = "ProductNumber", Style = normalStyle, Action = i => i.ProductNumber, },
                 new Column { Title = "Order Qty", Style = normalStyle, Action = i => i.OrderQty, },
-                new Column { Title = "Unit Net", Style = normalStyle, Action = i => i.UnitPrice, },
-                new Column { Title = "Line Total", Style = normalStyle, Action = i => i.LineTotal, },
-                //new Column { Title = "Invoice Total", Style = acctStyle, Action = i => i.InvoiceTotal, TotalAction = () => data.Sum(x=>x.InvoiceTotal), },
+                new Column { Title = "Unit Net", Style = normalStyle, Action = i => i.LineTotal / i.OrderQty, },
+                new Column { Title = "Line Total", Style = normalStyle, Action = i =>  i.LineTotal, },                
             };
 
             sheet.SaveData(columns, data);
@@ -64,7 +60,7 @@ namespace Apex_Programming_Assessment.Controllers
             // Note we are returning a filename as well as the handle
             JsonResult result = new JsonResult()
             {
-                Data = new { FileGuid = handle, FileName = "TestReportOutput.xlsx" },
+                Data = new { FileGuid = handle, FileName = "AdventureWorksOrderData.xlsx" },
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
             return result;
@@ -72,6 +68,7 @@ namespace Apex_Programming_Assessment.Controllers
         [HttpGet]
         public virtual ActionResult Download(string fileGuid, string fileName)
         {
+            //Retrieve the recenetly created file using the guid
             if (TempData[fileGuid] != null)
             {
                 byte[] data = TempData[fileGuid] as byte[];
@@ -79,8 +76,7 @@ namespace Apex_Programming_Assessment.Controllers
             }
             else
             {
-                // Problem - Log the error, generate a blank file,
-                //           redirect to another controller action - whatever fits with your application
+                // Handle errors
                 return new EmptyResult();
             }
         }
